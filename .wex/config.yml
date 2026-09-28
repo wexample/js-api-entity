@@ -5,6 +5,6 @@ git:
 global:
   name: js-api-entity
   type: javascript-package
-  version: 1.0.5
+  version: 1.0.6
 wex:
   version: 6.0.136
