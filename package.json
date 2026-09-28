@@ -1,0 +1,38 @@
+{
+  "version": "1.0.0",
+  "type": "module",
+  "name": "@wexample/js-api-entity",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@wexample/js-api": ">=8.0.0",
+    "@wexample/js-helpers": ">=3.0.0"
+  },
+  "repository": "https://github.com/wexample/js-api-entity",
+  "files": [
+    "src",
+    "bin"
+  ],
+  "sideEffects": false,
+  "exports": {
+    "./*": {
+      "types": "./src/*.ts",
+      "default": "./src/*.ts"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "src/*"
+      ]
+    }
+  }
+}
