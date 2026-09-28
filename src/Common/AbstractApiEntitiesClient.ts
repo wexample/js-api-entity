@@ -1,4 +1,6 @@
-import AbstractApiClient, { type ApiClientOptions } from '@wexample/js-api/Common/AbstractApiClient';
+import AbstractApiClient, {
+  type ApiClientOptions,
+} from '@wexample/js-api/Common/AbstractApiClient';
 import type AbstractApiEntity from './AbstractApiEntity.js';
 import type { ApiEntityConstructor } from './AbstractApiEntity.js';
 import type AbstractApiRepository from './AbstractApiRepository.js';

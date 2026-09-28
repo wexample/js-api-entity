@@ -1,0 +1,7 @@
+domain: js-api-entity.wex
+global:
+  name: js-api-entity
+  type: javascript-package
+  version: 1.0.0
+wex:
+  version: 6.0.136
