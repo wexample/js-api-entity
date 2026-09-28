@@ -1,6 +1,6 @@
 # @wexample/js-api-entity
 
-Version: 1.0.4
+Version: 1.0.5
 
 `@wexample/js-api-entity` is the TypeScript client side of the convention `wexample/symfony-api` serves. `AbstractApiEntity` and `AbstractApiRepository` turn `{type, entity, metadata, relationships}` items into entities checked field by field against the entity schema — an unknown key throws an `ApiSchemaError` instead of landing silently in the object. Repositories add named list and entity caches with TTL and in-flight deduplication, zero-indexed pagination mirroring `Wexample\SymfonyApi\Api\Dto\PaginationDto`, and hydration of relationships through the repositories registered on the client. Mercure live updates, the entity Vue mixins and the entity/repository generators ship in the same package.
 
