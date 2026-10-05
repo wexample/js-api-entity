@@ -27,6 +27,8 @@ export type LiveUpdatesConnectionOptions = {
   // the 'reconnecting' status alone says a retry is coming, not how far in.
   onReconnectScheduled?: (context: RetryBackoffScheduleContext) => void;
   reconnect?: ReconnectBackoffOptions;
+  // Where a stream replacing another one picks up from.
+  lastEventId?: string | null;
 };
 
 // Passive observer of a connection (status registry, monitoring): observers
@@ -64,6 +66,7 @@ export default class LiveUpdatesConnection {
   private readonly observers = new Set<LiveUpdatesConnectionObserver>();
   private source: EventSource | null = null;
   private currentStatus: LiveUpdatesConnectionStatus = 'connecting';
+  private lastEventId: string | null;
 
   constructor(options: LiveUpdatesConnectionOptions) {
     this.driver = options.driver;
@@ -71,6 +74,7 @@ export default class LiveUpdatesConnection {
     this.onMessage = options.onMessage;
     this.onStatusChange = options.onStatusChange;
     this.onReconnectScheduled = options.onReconnectScheduled;
+    this.lastEventId = options.lastEventId ?? null;
     this.reconnectScheduler = new RetryBackoffScheduler(
       options.reconnect ?? DEFAULT_RECONNECT_OPTIONS
     );
@@ -84,6 +88,10 @@ export default class LiveUpdatesConnection {
 
   getTopics(): string[] {
     return [...this.topics];
+  }
+
+  getLastEventId(): string | null {
+    return this.lastEventId;
   }
 
   // Registers a passive observer; returns its unsubscribe function.
@@ -104,7 +112,10 @@ export default class LiveUpdatesConnection {
     let result: EventSource | Promise<EventSource>;
 
     try {
-      result = this.driver.connect({ topics: [...this.topics] });
+      result = this.driver.connect({
+        topics: [...this.topics],
+        lastEventId: this.lastEventId,
+      });
     } catch {
       this.handleOpenFailure();
       return;
@@ -151,6 +162,10 @@ export default class LiveUpdatesConnection {
     };
 
     source.onmessage = (event: MessageEvent) => {
+      if (event.lastEventId) {
+        this.lastEventId = event.lastEventId;
+      }
+
       const payload = this.parseMessageData(event.data);
       this.onMessage?.(payload, event);
       for (const observer of this.observers) {

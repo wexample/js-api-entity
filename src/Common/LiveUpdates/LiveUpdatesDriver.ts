@@ -3,6 +3,9 @@
 // topic knowledge live elsewhere (LiveUpdatesConnection, API clients).
 export type LiveUpdatesDriverConnectOptions = {
   topics: string[];
+  // The id of the last update received, so a stream reopened on other topics
+  // asks the hub for what it missed in between.
+  lastEventId?: string | null;
 };
 
 // connect() may be async, e.g. when the driver has to fetch a fresh

@@ -15,8 +15,11 @@ export type MercureDriverConfig = {
 };
 
 // Called on every connect, so a reconnection can carry a token the previous one no
-// longer had — see LiveSubscriberInfoResolver.
-export type MercureDriverConfigResolver = () => MercureDriverConfig | Promise<MercureDriverConfig>;
+// longer had — see LiveSubscriberInfoResolver. Handed the topics about to be opened,
+// for a hub whose token is granted for exactly those.
+export type MercureDriverConfigResolver = (
+  options: LiveUpdatesDriverConnectOptions
+) => MercureDriverConfig | Promise<MercureDriverConfig>;
 
 export default class MercureLiveUpdatesDriver implements LiveUpdatesDriverInterface {
   private readonly configResolver: MercureDriverConfigResolver;
@@ -28,7 +31,7 @@ export default class MercureLiveUpdatesDriver implements LiveUpdatesDriverInterf
   // A synchronous resolver still opens synchronously: only a resolver that has to go
   // and fetch a token defers, and the interface has always allowed that.
   connect(options: LiveUpdatesDriverConnectOptions): EventSource | Promise<EventSource> {
-    const config = this.configResolver();
+    const config = this.configResolver(options);
 
     if (config instanceof Promise) {
       return config.then((resolved) => this.open(resolved, options));
@@ -60,6 +63,12 @@ export default class MercureLiveUpdatesDriver implements LiveUpdatesDriverInterf
 
     if (config.jwt) {
       url.searchParams.append(jwtParamName, config.jwt);
+    }
+
+    // EventSource only sends Last-Event-ID on its own retries: a stream opened
+    // anew passes it the way the hub reads it from a url.
+    if (options.lastEventId) {
+      url.searchParams.append('lastEventID', options.lastEventId);
     }
 
     Object.entries(config.additionalParams || {}).forEach(([key, value]) => {
