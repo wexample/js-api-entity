@@ -1,5 +1,5 @@
 {
-  "version": "2.0.3",
+  "version": "2.0.4",
   "type": "module",
   "name": "@wexample/js-api-entity",
   "scripts": {
@@ -13,8 +13,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@wexample/js-api": ">=8.0.0",
-    "@wexample/js-helpers": ">=5.0.0"
+    "@wexample/js-api": ">=8.0.8",
+    "@wexample/js-helpers": ">=5.0.5"
   },
   "repository": "https://github.com/wexample/js-api-entity",
   "files": [
