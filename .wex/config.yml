@@ -1,6 +1,5 @@
 domain: js-api-entity.wex
 git:
-  main_deployment_remote_name: github
   publication_strategy: main_push
 global:
   name: js-api-entity
