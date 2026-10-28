@@ -16,11 +16,19 @@ export default abstract class AbstractApiEntitiesClient extends AbstractApiClien
     this.entityManager = new ApiEntityManager({
       client: this,
       repositories: this.getRepositoryClasses(),
+      entities: this.getEntityClasses(),
     });
     this.entityRegistry = new ApiEntityRegistry();
   }
 
   protected abstract getRepositoryClasses(): RepositoryClass[];
+
+  // The kinds of the entities, beyond the one each repository hydrates: the
+  // subclasses of a hierarchy, which a package may add to an entity another
+  // package declares. None by default.
+  protected getEntityClasses(): ApiEntityConstructor<AbstractApiEntity>[] {
+    return [];
+  }
 
   getEntityManager(): ApiEntityManager {
     return this.entityManager;

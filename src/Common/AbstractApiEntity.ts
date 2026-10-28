@@ -8,9 +8,18 @@ export type ApiEntitySchemaProperty = {
   readOnly?: boolean;
   serializable?: boolean;
 };
+// What a class is within a hierarchy of entities: the property every row
+// carries to say which kind it is, and the value this class stores in it.
+export type ApiEntitySchemaDiscriminator = {
+  property: string;
+  value: string;
+};
 export type ApiEntitySchema = {
   name: string;
   properties: unknown[];
+  // The parent class, by its short name, when it is an entity of the api too.
+  extends?: string;
+  discriminator?: ApiEntitySchemaDiscriminator;
 };
 
 import {
