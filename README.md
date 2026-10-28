@@ -1,6 +1,6 @@
 # @wexample/js-api-entity
 
-Version: 2.0.5
+Version: 3.0.0
 
 ## Table of Contents
 
