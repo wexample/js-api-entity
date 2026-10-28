@@ -51,7 +51,8 @@ export default class ApiEntityManager {
     }
 
     const value = data[property];
-    const subtype = typeof value === 'string' ? this.subtypes[entityType.entityName]?.[value] : undefined;
+    const subtype =
+      typeof value === 'string' ? this.subtypes[entityType.entityName]?.[value] : undefined;
 
     return (subtype as ApiEntityConstructor<T> | undefined) ?? entityType;
   }

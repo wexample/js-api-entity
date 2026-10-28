@@ -163,7 +163,9 @@ export default abstract class AbstractApiRepository<
     this.assertApiItemType(item, this.getEntityType());
     // The item names the entity; what the row turns out to be, its
     // discriminator says — a kind registered with the client, or the entity.
-    const entityType = this.client.getEntityManager().resolveEntityType(this.getEntityType(), item.entity);
+    const entityType = this.client
+      .getEntityManager()
+      .resolveEntityType(this.getEntityType(), item.entity);
     const entity = entityType.fromApi(item.entity);
     const createdRelationships = this.createRelationships(item.relationships);
 
